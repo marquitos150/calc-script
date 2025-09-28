@@ -1,19 +1,19 @@
 function add(x, y) {
-    let result = roundTruncate(x + y);
+    let result = x + y;
     let error = checkOverflowUnderflow(result);
-    return error === "" ? String(result) : error;
+    return error === "" ? String(roundTruncate(result)) : error;
 }
 
 function subtract(x, y) {
-    let result = roundTruncate(x - y);
+    let result = x - y;
     let error = checkOverflowUnderflow(result);
-    return error === "" ? String(result) : error;
+    return error === "" ? String(roundTruncate(result)) : error;
 }
 
 function multiply(x, y) {
-    let result = roundTruncate(x * y);
+    let result = x * y;
     let error = checkOverflowUnderflow(result);
-    return error === "" ? String(result) : error;
+    return error === "" ? String(roundTruncate(result)) : error;
 }
 
 function divide(x, y) {
@@ -21,9 +21,9 @@ function divide(x, y) {
         alert("CAN'T DO DIVISION BY 0");
         return "NaN";
     }
-    let result = roundTruncate(x / y);
+    let result = x / y;
     let error = checkOverflowUnderflow(result);
-    return error === "" ? String(result) : error;
+    return error === "" ? String(roundTruncate(result)) : error;
 }
 
 function checkOverflowUnderflow(result) {
@@ -74,7 +74,6 @@ let memArr = [0]; // for memory buttons
 const display = document.querySelector(".display");
 display.textContent = "0";
 const btns = document.querySelector(".buttons-container");
-console.log(btns);
 
 btns.addEventListener("click", (e) => {
     let target = e.target;
@@ -88,7 +87,7 @@ btns.addEventListener("click", (e) => {
         return;
     }
 
-    if (display.textContent === "NaN" || display.textContent === "Overflow") {
+    if (display.textContent === "NaN" || display.textContent === "Overflow" || display.textContent === "Underflow") {
         // prevents user from interacting with calculator until "clear" is clicked
         return;
     }
@@ -193,5 +192,4 @@ btns.addEventListener("click", (e) => {
         mrToggled = false;
 
     }
-    console.log(memArr);
 });
