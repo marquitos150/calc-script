@@ -56,6 +56,7 @@ let operator = "";
 let operand2 = "";
 
 let resetDisplay = false;
+let operatorPressed = false;
 
 const display = document.querySelector(".display");
 display.textContent = "0";
@@ -63,10 +64,12 @@ const btns = document.querySelector(".buttons-container");
 console.log(btns);
 btns.addEventListener("click", (e) => {
     let target = e.target;
+
     if (target.id === "clear") {
         display.textContent = "0";
         operand1 = "";
         operand2 = "";
+        operatorPressed = false;
         return;
     }
 
@@ -75,7 +78,8 @@ btns.addEventListener("click", (e) => {
         return;
     }
     
-    if (Number.isInteger(parseInt(target.id))) {      
+    if (Number.isInteger(parseInt(target.id))) {    
+        operatorPressed = false;  
         if (display.textContent === "0" || resetDisplay) {
             display.textContent = target.id;
             resetDisplay = false;
@@ -84,37 +88,52 @@ btns.addEventListener("click", (e) => {
         }
 
     } else if (target.id === "add") {
-        operand2 = operand1.length !== 0 ? display.textContent : "";
-        operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-        display.textContent = operand1;
-        resetDisplay = true;
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
         operator = "+";
 
     } else if (target.id === "subtract") {
-        operand2 = operand1.length !== 0 ? display.textContent : "";
-        operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-        display.textContent = operand1;
-        resetDisplay = true;
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
         operator = "-";
 
     } else if (target.id === "multiply") {
-        operand2 = operand1.length !== 0 ? display.textContent : "";
-        operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-        display.textContent = operand1;
-        resetDisplay = true;
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
         operator = "*";
 
     } else if (target.id === "divide") {
-        operand2 = operand1.length !== 0 ? display.textContent : "";
-        operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-        display.textContent = operand1;
-        resetDisplay = true;
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
         operator = "/";
 
     } else if (target.id === "equals") {
-        display.textContent = operate(operand1, display.textContent, operator);
-        operand1 = "";
-        operand2 = "";
+        if (operand1 !== "" && !operatorPressed) {
+            display.textContent = operate(operand1, display.textContent, operator);
+            operand1 = "";
+            operand2 = "";
+            operatorPressed = false;
+        }
         resetDisplay = true;
     }
 });
