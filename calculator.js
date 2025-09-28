@@ -75,6 +75,7 @@ const display = document.querySelector(".display");
 display.textContent = "0";
 const btns = document.querySelector(".buttons-container");
 
+// UI Buttons Support
 btns.addEventListener("click", (e) => {
     let target = e.target;
 
@@ -200,6 +201,114 @@ btns.addEventListener("click", (e) => {
     } else if (target.id === "m-plus") {
         memArr.push(Number(display.textContent));
         mrToggled = false;
+
+    }
+});
+
+// Keyboard Support
+document.querySelector("body").addEventListener("keydown", (e) => {
+    let key = e.key;
+
+    if (key === "Escape") {
+        display.textContent = "0";
+        operand1 = "";
+        operand2 = "";
+        operatorPressed = false;
+        mrToggled = false;
+        return;
+    }
+
+    if (display.textContent === "NaN" || display.textContent === "Overflow" || display.textContent === "Underflow") {
+        // prevents user from interacting with calculator until "clear" is clicked
+        return;
+    }
+    
+    if (Number.isInteger(parseInt(key))) {    
+        operatorPressed = false;  
+        if (display.textContent === "0" || resetDisplay) {
+            display.textContent = key;
+            resetDisplay = false;
+        } else if (display.textContent.length < 14) {
+            display.textContent += key;
+        }
+        mrToggled = false;
+
+    } else if (key === ".") {
+        if (resetDisplay) {
+            display.textContent = "0";
+            resetDisplay = false;
+        }
+        if (!dotInDisplay) {
+            display.textContent += ".";
+            dotInDisplay = true;
+        }
+        mrToggled = false;
+
+    } else if (key === "+") {
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
+        operator = "+";
+        dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (key === "-") {
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
+        operator = "-";
+        dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (key === "*") {
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
+        operator = "*";
+        dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (key === "/") {
+        if (!operatorPressed) {
+            operand2 = operand1.length !== 0 ? display.textContent : "";
+            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
+            display.textContent = operand1;
+            resetDisplay = true;
+            operatorPressed = true;
+        }
+        operator = "/";
+        dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (key === "=" || key === "Enter") {
+        if (operand1 !== "" && !operatorPressed) {
+            display.textContent = operate(operand1, display.textContent, operator);
+            operand1 = "";
+            operand2 = "";
+            operatorPressed = false;
+        }
+        resetDisplay = true;
+        dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (key === "Backspace") {
+        display.textContent = display.textContent.length !== 1 &&
+            (display.textContent.length !== 2 || display.textContent[0] !== "-") ? 
+            display.textContent.substring(0, display.textContent.length - 1) : "0";
+        
+        if (!display.textContent.includes(".")) dotInDisplay = false;
 
     }
 });
