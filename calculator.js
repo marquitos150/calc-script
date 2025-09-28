@@ -1,19 +1,16 @@
 function add(x, y) {
     let result = x + y;
-    let error = checkOverflowUnderflow(result);
-    return error === "" ? String(roundTruncate(result)) : error;
+    return processResult(result);
 }
 
 function subtract(x, y) {
     let result = x - y;
-    let error = checkOverflowUnderflow(result);
-    return error === "" ? String(roundTruncate(result)) : error;
+    return processResult(result);
 }
 
 function multiply(x, y) {
     let result = x * y;
-    let error = checkOverflowUnderflow(result);
-    return error === "" ? String(roundTruncate(result)) : error;
+    return processResult(result);
 }
 
 function divide(x, y) {
@@ -22,6 +19,10 @@ function divide(x, y) {
         return "NaN";
     }
     let result = x / y;
+    return processResult(result);
+}
+
+function processResult(result) {
     let error = checkOverflowUnderflow(result);
     return error === "" ? String(roundTruncate(result)) : error;
 }
@@ -72,12 +73,14 @@ let mrToggled = false;
 let memArr = [0]; // for memory buttons
 
 const display = document.querySelector(".display");
-display.textContent = "0";
 const btns = document.querySelector(".buttons-container");
+
+display.textContent = "0";
 
 // UI Buttons Support
 btns.addEventListener("click", (e) => {
     let target = e.target;
+    target.blur(); // removes focus highlight
 
     if (target.id === "clear") {
         display.textContent = "0";
@@ -94,13 +97,13 @@ btns.addEventListener("click", (e) => {
     }
     
     if (Number.isInteger(parseInt(target.id))) {    
-        operatorPressed = false;  
         if (display.textContent === "0" || resetDisplay) {
             display.textContent = target.id;
             resetDisplay = false;
         } else if (display.textContent.length < 14) {
             display.textContent += target.id;
         }
+        operatorPressed = false;  
         mrToggled = false;
 
     } else if (target.id === "dot") {
@@ -114,7 +117,8 @@ btns.addEventListener("click", (e) => {
         }
         mrToggled = false;
 
-    } else if (target.id === "add") {
+    } else if (target.id === "add" || target.id === "subtract" || 
+                target.id === "multiply" || target.id === "divide") {
         if (!operatorPressed) {
             operand2 = operand1.length !== 0 ? display.textContent : "";
             operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
@@ -122,45 +126,13 @@ btns.addEventListener("click", (e) => {
             resetDisplay = true;
             operatorPressed = true;
         }
-        operator = "+";
         dotInDisplay = false;
         mrToggled = false;
 
-    } else if (target.id === "subtract") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "-";
-        dotInDisplay = false;
-        mrToggled = false;
-
-    } else if (target.id === "multiply") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "*";
-        dotInDisplay = false;
-        mrToggled = false;
-
-    } else if (target.id === "divide") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "/";
-        dotInDisplay = false;
-        mrToggled = false;
+        if (target.id === "add") operator = "+"; 
+        if (target.id === "subtract") operator = "-"; 
+        if (target.id === "multiply") operator = "*"; 
+        if (target.id === "divide") operator = "/"; 
 
     } else if (target.id === "equals") {
         if (operand1 !== "" && !operatorPressed) {
@@ -244,7 +216,7 @@ document.querySelector("body").addEventListener("keydown", (e) => {
         }
         mrToggled = false;
 
-    } else if (key === "+") {
+    } else if (key === "+" || key === "-" || key === "*" || key === "/") {
         if (!operatorPressed) {
             operand2 = operand1.length !== 0 ? display.textContent : "";
             operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
@@ -252,45 +224,13 @@ document.querySelector("body").addEventListener("keydown", (e) => {
             resetDisplay = true;
             operatorPressed = true;
         }
-        operator = "+";
         dotInDisplay = false;
         mrToggled = false;
 
-    } else if (key === "-") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "-";
-        dotInDisplay = false;
-        mrToggled = false;
-
-    } else if (key === "*") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "*";
-        dotInDisplay = false;
-        mrToggled = false;
-
-    } else if (key === "/") {
-        if (!operatorPressed) {
-            operand2 = operand1.length !== 0 ? display.textContent : "";
-            operand1 = operand2.length === 0 ? display.textContent : operate(operand1, operand2, operator);
-            display.textContent = operand1;
-            resetDisplay = true;
-            operatorPressed = true;
-        }
-        operator = "/";
-        dotInDisplay = false;
-        mrToggled = false;
+        if (key === "+") operator = "+"; 
+        if (key === "-") operator = "-"; 
+        if (key === "*") operator = "*"; 
+        if (key === "/") operator = "/"; 
 
     } else if (key === "=" || key === "Enter") {
         if (operand1 !== "" && !operatorPressed) {
@@ -309,6 +249,5 @@ document.querySelector("body").addEventListener("keydown", (e) => {
             display.textContent.substring(0, display.textContent.length - 1) : "0";
         
         if (!display.textContent.includes(".")) dotInDisplay = false;
-
     }
 });
