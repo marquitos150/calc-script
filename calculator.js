@@ -67,11 +67,15 @@ let operand2 = "";
 let resetDisplay = false;
 let operatorPressed = false;
 let dotInDisplay = false;
+let mrToggled = false;
+
+let memArr = [0]; // for memory buttons
 
 const display = document.querySelector(".display");
 display.textContent = "0";
 const btns = document.querySelector(".buttons-container");
 console.log(btns);
+
 btns.addEventListener("click", (e) => {
     let target = e.target;
 
@@ -80,6 +84,7 @@ btns.addEventListener("click", (e) => {
         operand1 = "";
         operand2 = "";
         operatorPressed = false;
+        mrToggled = false;
         return;
     }
 
@@ -96,6 +101,7 @@ btns.addEventListener("click", (e) => {
         } else if (display.textContent.length < 14) {
             display.textContent += target.id;
         }
+        mrToggled = false;
 
     } else if (target.id === "dot") {
         if (resetDisplay) {
@@ -106,6 +112,7 @@ btns.addEventListener("click", (e) => {
             display.textContent += ".";
             dotInDisplay = true;
         }
+        mrToggled = false;
 
     } else if (target.id === "add") {
         if (!operatorPressed) {
@@ -117,6 +124,7 @@ btns.addEventListener("click", (e) => {
         }
         operator = "+";
         dotInDisplay = false;
+        mrToggled = false;
 
     } else if (target.id === "subtract") {
         if (!operatorPressed) {
@@ -128,6 +136,7 @@ btns.addEventListener("click", (e) => {
         }
         operator = "-";
         dotInDisplay = false;
+        mrToggled = false;
 
     } else if (target.id === "multiply") {
         if (!operatorPressed) {
@@ -139,6 +148,7 @@ btns.addEventListener("click", (e) => {
         }
         operator = "*";
         dotInDisplay = false;
+        mrToggled = false;
 
     } else if (target.id === "divide") {
         if (!operatorPressed) {
@@ -150,6 +160,7 @@ btns.addEventListener("click", (e) => {
         }
         operator = "/";
         dotInDisplay = false;
+        mrToggled = false;
 
     } else if (target.id === "equals") {
         if (operand1 !== "" && !operatorPressed) {
@@ -160,5 +171,27 @@ btns.addEventListener("click", (e) => {
         }
         resetDisplay = true;
         dotInDisplay = false;
+        mrToggled = false;
+
+    } else if (target.id === "mrc") {
+        if (mrToggled) { // MC
+            memArr = [0];
+            mrToggled = false;
+        } else { // MR
+            let result = memArr.reduce((sum, current) => sum + current, 0);
+            memArr = [result];
+            display.textContent = String(result);
+            mrToggled = true;
+        }
+
+    } else if (target.id === "m-minus") {
+        memArr.push(-1 * Number(display.textContent));
+        mrToggled = false;
+
+    } else if (target.id === "m-plus") {
+        memArr.push(Number(display.textContent));
+        mrToggled = false;
+
     }
+    console.log(memArr);
 });
