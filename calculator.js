@@ -1,16 +1,19 @@
 function add(x, y) {
     let result = roundTruncate(x + y);
-    return checkOverflow(result) ? "Overflow" : String(result);
+    let error = checkOverflowUnderflow(result);
+    return error === "" ? String(result) : error;
 }
 
 function subtract(x, y) {
     let result = roundTruncate(x - y);
-    return checkOverflow(result) ? "Overflow" : String(result);
+    let error = checkOverflowUnderflow(result);
+    return error === "" ? String(result) : error;
 }
 
 function multiply(x, y) {
     let result = roundTruncate(x * y);
-    return checkOverflow(result) ? "Overflow" : String(result);
+    let error = checkOverflowUnderflow(result);
+    return error === "" ? String(result) : error;
 }
 
 function divide(x, y) {
@@ -19,16 +22,21 @@ function divide(x, y) {
         return "NaN";
     }
     let result = roundTruncate(x / y);
-    return checkOverflow(result) ? "Overflow" : String(result);
+    let error = checkOverflowUnderflow(result);
+    return error === "" ? String(result) : error;
 }
 
-function checkOverflow(result) {
+function checkOverflowUnderflow(result) {
     if (result > 99999999999999) {
         alert("OVERFLOW ERROR");
-        return true;
+        return "Overflow";
+    }
+    if (result < -99999999999999) {
+        alert("UNDERFLOW ERROR");
+        return "Underflow";
     }
 
-    return false;
+    return "";
 }
 
 // Ensures that the results are contained within the display box (up to 14 digits not including dot)
@@ -36,12 +44,13 @@ function roundTruncate(result) {
     // Number.EPSILON ensures things like 1.005 are rounded properly
     let roundedResult = Math.round((result + Number.EPSILON) * 10000000000000) / 10000000000000;
 
-    // Decimal is too big, truncate it and then round again
-    if (String(roundedResult).length > 15) {
+    // Decimal is too big, truncate it
+    if ((String(roundedResult)[0] === "-" && String(roundedResult).length > 16) || 
+        (String(roundedResult)[0] !== "-" && String(roundedResult).length > 15)) {
         return Number(String(roundedResult).substring(0, 15));
     }
 
-    return roundedResult
+    return roundedResult;
 }
 
 function operate(operand1, operand2, operator) {
@@ -57,6 +66,7 @@ let operand2 = "";
 
 let resetDisplay = false;
 let operatorPressed = false;
+let dotInDisplay = false;
 
 const display = document.querySelector(".display");
 display.textContent = "0";
@@ -87,6 +97,16 @@ btns.addEventListener("click", (e) => {
             display.textContent += target.id;
         }
 
+    } else if (target.id === "dot") {
+        if (resetDisplay) {
+            display.textContent = "0";
+            resetDisplay = false;
+        }
+        if (!dotInDisplay) {
+            display.textContent += ".";
+            dotInDisplay = true;
+        }
+
     } else if (target.id === "add") {
         if (!operatorPressed) {
             operand2 = operand1.length !== 0 ? display.textContent : "";
@@ -96,6 +116,7 @@ btns.addEventListener("click", (e) => {
             operatorPressed = true;
         }
         operator = "+";
+        dotInDisplay = false;
 
     } else if (target.id === "subtract") {
         if (!operatorPressed) {
@@ -106,6 +127,7 @@ btns.addEventListener("click", (e) => {
             operatorPressed = true;
         }
         operator = "-";
+        dotInDisplay = false;
 
     } else if (target.id === "multiply") {
         if (!operatorPressed) {
@@ -116,6 +138,7 @@ btns.addEventListener("click", (e) => {
             operatorPressed = true;
         }
         operator = "*";
+        dotInDisplay = false;
 
     } else if (target.id === "divide") {
         if (!operatorPressed) {
@@ -126,6 +149,7 @@ btns.addEventListener("click", (e) => {
             operatorPressed = true;
         }
         operator = "/";
+        dotInDisplay = false;
 
     } else if (target.id === "equals") {
         if (operand1 !== "" && !operatorPressed) {
@@ -135,5 +159,6 @@ btns.addEventListener("click", (e) => {
             operatorPressed = false;
         }
         resetDisplay = true;
+        dotInDisplay = false;
     }
 });
