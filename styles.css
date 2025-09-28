@@ -28,6 +28,7 @@ button {
     color: black;
     text-align: right;
     font-size: 30px;
+    letter-spacing: 2px;
 }
 
 .buttons-container {
