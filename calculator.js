@@ -1,13 +1,16 @@
 function add(x, y) {
-    return String(x + y);
+    let result = roundTruncate(x + y);
+    return checkOverflow(result) ? "Overflow" : String(result);
 }
 
 function subtract(x, y) {
-    return String(x - y);
+    let result = roundTruncate(x - y);
+    return checkOverflow(result) ? "Overflow" : String(result);
 }
 
 function multiply(x, y) {
-    return String(x * y);
+    let result = roundTruncate(x * y);
+    return checkOverflow(result) ? "Overflow" : String(result);
 }
 
 function divide(x, y) {
@@ -15,7 +18,30 @@ function divide(x, y) {
         alert("CAN'T DO DIVISION BY 0");
         return "NaN";
     }
-    return String(x / y);
+    let result = roundTruncate(x / y);
+    return checkOverflow(result) ? "Overflow" : String(result);
+}
+
+function checkOverflow(result) {
+    if (result > 99999999999999) {
+        alert("OVERFLOW ERROR");
+        return true;
+    }
+
+    return false;
+}
+
+// Ensures that the results are contained within the display box (up to 14 digits not including dot)
+function roundTruncate(result) {
+    // Number.EPSILON ensures things like 1.005 are rounded properly
+    let roundedResult = Math.round((result + Number.EPSILON) * 10000000000000) / 10000000000000;
+
+    // Decimal is too big, truncate it and then round again
+    if (String(roundedResult).length > 15) {
+        return Number(String(roundedResult).substring(0, 15));
+    }
+
+    return roundedResult
 }
 
 function operate(operand1, operand2, operator) {
@@ -44,7 +70,7 @@ btns.addEventListener("click", (e) => {
         return;
     }
 
-    if (display.textContent === "NaN") {
+    if (display.textContent === "NaN" || display.textContent === "Overflow") {
         // prevents user from interacting with calculator until "clear" is clicked
         return;
     }
@@ -53,7 +79,7 @@ btns.addEventListener("click", (e) => {
         if (display.textContent === "0" || resetDisplay) {
             display.textContent = target.id;
             resetDisplay = false;
-        } else if (display.textContent.length < 12) {
+        } else if (display.textContent.length < 14) {
             display.textContent += target.id;
         }
 
