@@ -173,14 +173,15 @@ btns.addEventListener("click", (e) => {
         mrToggled = false;
 
     } else if (target.id === "backspace") {
-        display.textContent = display.textContent.length !== 1 ? 
+        display.textContent = display.textContent.length !== 1 &&
+            (display.textContent.length !== 2 || display.textContent[0] !== "-") ? 
             display.textContent.substring(0, display.textContent.length - 1) : "0";
         
         if (!display.textContent.includes(".")) dotInDisplay = false;
 
     } else if (target.id === "sign") {
         display.textContent = String(-1 * Number(display.textContent));
-        
+
     } else if (target.id === "mrc") {
         if (mrToggled) { // MC
             memArr = [0];
