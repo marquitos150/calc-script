@@ -172,6 +172,15 @@ btns.addEventListener("click", (e) => {
         dotInDisplay = false;
         mrToggled = false;
 
+    } else if (target.id === "backspace") {
+        display.textContent = display.textContent.length !== 1 ? 
+            display.textContent.substring(0, display.textContent.length - 1) : "0";
+        
+        if (!display.textContent.includes(".")) dotInDisplay = false;
+
+    } else if (target.id === "sign") {
+        display.textContent = String(-1 * Number(display.textContent));
+        
     } else if (target.id === "mrc") {
         if (mrToggled) { // MC
             memArr = [0];
