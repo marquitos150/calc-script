@@ -23,6 +23,7 @@ There are 4 operator buttons which handle the basic arithmetic operations: `+`, 
 > [!WARNING]
 > - Dividing a number by 0 using the `/` operator will result in a `DIVISION BY ZERO` error, and the display will show `NaN`.
 > - If the result of the operations is greater than 99999999999999, then an `Overflow` error will be displayed. Vice versa, if the result of the operations is less than -99999999999999, then an `Underflow` error will be displayed.
+
 > Once an error is caught, the user cannot interact with the calculator until the `CE` button is clicked.
 
 #### Decimals and Sign Change
