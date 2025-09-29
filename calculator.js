@@ -152,9 +152,11 @@ btns.addEventListener("click", (e) => {
             display.textContent.substring(0, display.textContent.length - 1) : "0";
         
         if (!display.textContent.includes(".")) dotInDisplay = false;
+        mrToggled = false;
 
     } else if (target.id === "sign") {
         display.textContent = String(-1 * Number(display.textContent));
+        mrToggled = false;
 
     } else if (target.id === "mrc") {
         if (mrToggled) { // MC
@@ -248,5 +250,6 @@ document.querySelector("body").addEventListener("keydown", (e) => {
             display.textContent.substring(0, display.textContent.length - 1) : "0";
         
         if (!display.textContent.includes(".")) dotInDisplay = false;
+        mrToggled = false;
     }
 });
