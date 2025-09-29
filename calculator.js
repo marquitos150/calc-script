@@ -46,8 +46,8 @@ function roundTruncate(result) {
     let roundedResult = Math.round((result + Number.EPSILON) * 10000000000000) / 10000000000000;
 
     // Decimal is too big, truncate it
-    if ((String(roundedResult)[0] === "-" && String(roundedResult).length > 16) || 
-        (String(roundedResult)[0] !== "-" && String(roundedResult).length > 15)) {
+    if ((String(roundedResult)[0] === "-" && String(roundedResult).length > 15) || 
+        (String(roundedResult)[0] !== "-" && String(roundedResult).length > 14)) {
         return Number(String(roundedResult).substring(0, 15));
     }
 
@@ -88,6 +88,7 @@ btns.addEventListener("click", (e) => {
         operand2 = "";
         operatorPressed = false;
         mrToggled = false;
+        dotInDisplay = false;
         return;
     }
 
@@ -187,6 +188,7 @@ document.querySelector("body").addEventListener("keydown", (e) => {
         operand2 = "";
         operatorPressed = false;
         mrToggled = false;
+        dotInDisplay = false;
         return;
     }
 
