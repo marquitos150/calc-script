@@ -23,8 +23,7 @@ There are 4 operator buttons which handle the basic arithmetic operations: `+`, 
 > [!WARNING]
 > - Dividing a number by 0 using the `/` operator will result in a `DIVISION BY ZERO` error, and the display will show `NaN`.
 > - If the result of the operations is greater than 99999999999999, then an `Overflow` error will be displayed. Vice versa, if the result of the operations is less than -99999999999999, then an `Underflow` error will be displayed.
-
-> Once an error is caught, the user cannot interact with the calculator until the `CE` button is clicked.
+> - Once an error is caught, the user cannot interact with the calculator until the `CE` button is clicked.
 
 #### Decimals and Sign Change
 Two other buttons that can be used on numbers are the `.` and `+/-` buttons. The user can add at most 1 `.` to the display to represent the number as a decimal. Additionally, the user can change the sign of the number by clicking the `+/-` button.
@@ -33,7 +32,20 @@ Two other buttons that can be used on numbers are the `.` and `+/-` buttons. The
 > There is currently no keyboard key supported for the `+/-` button.
 
 ### Handling Memory
+Using the memory buttons (`M+`, `M-`, and `MRC`) can be confusing if you're unfamiliar to what they do. Essentially, there is a value that is stored in the calculator's memory which keeps track of a running total for a complex calculation. The `M+` button adds the displayed number to the memory value, the `M-` button subtracts the displayed number from the memory value, and the `MRC` recalls and displays the stored memory value, with a double-press clearing the memory to 0.
+
+> [!NOTE]
+> There are currently no keyboard keys supported for the memory buttons.
 
 ### Supported Keys for Keyboard Control
+- Numbers `0-9`
+- `Escape` for `CE`
+- Decimal Point `.`
+- Arithmetic Operators (`+`, `-`, `*`, `/`)
+- Evaluation Operator (`=`, `Enter`)
+- `Backspace` for `<-`
 
 ## Final Notes
+Further improvements can be done in order to expand the Dark Calculator's functionality. For instance, it could include additional operator buttons such as `√` (square root) and `%` (modulus) to handle a wider range of mathematical tasks. The calculator would have to be adjusted to accommodate for such buttons. Moreover, there could be an additional function which handles scientific notation, which would allow the calculator to display much larger or more precise numbers rather than those that were truncated or limited to approximately 14 digits.
+
+Overall, this project was certainly challenging not because of the functions themselves, but in handling edge cases and ensuring the calculator behaves correctly under all possible inputs. It reinforced my web development skills while also providing me with valuable experience in careful logic design and debugging.

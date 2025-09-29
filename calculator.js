@@ -70,7 +70,7 @@ let operatorPressed = false;
 let dotInDisplay = false;
 let mrToggled = false;
 
-let memArr = [0]; // for memory buttons
+let numInMemory = 0; // for memory buttons
 
 const display = document.querySelector(".display");
 const btns = document.querySelector(".buttons-container");
@@ -158,23 +158,20 @@ btns.addEventListener("click", (e) => {
 
     } else if (target.id === "mrc") {
         if (mrToggled) { // MC
-            memArr = [0];
+            numInMemory = 0;
             mrToggled = false;
         } else { // MR
-            let result = memArr.reduce((sum, current) => sum + current, 0);
-            memArr = [result];
-            display.textContent = String(result);
+            display.textContent = String(numInMemory);
             mrToggled = true;
         }
 
     } else if (target.id === "m-minus") {
-        memArr.push(-1 * Number(display.textContent));
+        numInMemory -= Number(display.textContent);
         mrToggled = false;
 
     } else if (target.id === "m-plus") {
-        memArr.push(Number(display.textContent));
+        numInMemory += Number(display.textContent);
         mrToggled = false;
-
     }
 });
 
